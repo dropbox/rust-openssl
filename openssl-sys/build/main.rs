@@ -60,6 +60,16 @@ fn main() {
 
     let target = env::var("TARGET").unwrap();
 
+    // DBX: to keep `cargo` seamless, hack in the location of the virtual environment.
+    // XXX: we should consider moving to using the `OPENSSL_DIR` env var.
+    let virtual_env_dir = env::current_dir().unwrap().join("..").join("..").join("virtual_env");
+    let openssl_dir = if target.contains("windows") {
+        virtual_env_dir.join("openssl")
+    } else {
+        virtual_env_dir.clone()
+    };
+    env::set_var("OPENSSL_DIR", openssl_dir);
+
     let (lib_dir, include_dir) = find_openssl(&target);
 
     if !Path::new(&lib_dir).exists() {
