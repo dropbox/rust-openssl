@@ -206,21 +206,22 @@ impl Cipher {
         unsafe { Cipher(ffi::EVP_aes_256_ofb()) }
     }
 
-    pub fn bf_cbc() -> Cipher {
-        unsafe { Cipher(ffi::EVP_bf_cbc()) }
-    }
+    // DBX: we build openssl w/ `no-bf`.
+    // pub fn bf_cbc() -> Cipher {
+    //     unsafe { Cipher(ffi::EVP_bf_cbc()) }
+    // }
 
-    pub fn bf_ecb() -> Cipher {
-        unsafe { Cipher(ffi::EVP_bf_ecb()) }
-    }
+    // pub fn bf_ecb() -> Cipher {
+    //     unsafe { Cipher(ffi::EVP_bf_ecb()) }
+    // }
 
-    pub fn bf_cfb64() -> Cipher {
-        unsafe { Cipher(ffi::EVP_bf_cfb64()) }
-    }
+    // pub fn bf_cfb64() -> Cipher {
+    //     unsafe { Cipher(ffi::EVP_bf_cfb64()) }
+    // }
 
-    pub fn bf_ofb() -> Cipher {
-        unsafe { Cipher(ffi::EVP_bf_ofb()) }
-    }
+    // pub fn bf_ofb() -> Cipher {
+    //     unsafe { Cipher(ffi::EVP_bf_ofb()) }
+    // }
 
     pub fn des_cbc() -> Cipher {
         unsafe { Cipher(ffi::EVP_des_cbc()) }
@@ -1141,47 +1142,48 @@ mod tests {
         cipher_test(super::Cipher::aes_256_ofb(), pt, ct, key, iv);
     }
 
-    #[test]
-    fn test_bf_cbc() {
-        // https://www.schneier.com/code/vectors.txt
+    // DBX: we build openssl w/ `no-bf`.
+    //#[test]
+    //fn test_bf_cbc() {
+    //    // https://www.schneier.com/code/vectors.txt
 
-        let pt = "37363534333231204E6F77206973207468652074696D6520666F722000000000";
-        let ct = "6B77B4D63006DEE605B156E27403979358DEB9E7154616D959F1652BD5FF92CC";
-        let key = "0123456789ABCDEFF0E1D2C3B4A59687";
-        let iv = "FEDCBA9876543210";
+    //    let pt = "37363534333231204E6F77206973207468652074696D6520666F722000000000";
+    //    let ct = "6B77B4D63006DEE605B156E27403979358DEB9E7154616D959F1652BD5FF92CC";
+    //    let key = "0123456789ABCDEFF0E1D2C3B4A59687";
+    //    let iv = "FEDCBA9876543210";
 
-        cipher_test_nopad(super::Cipher::bf_cbc(), pt, ct, key, iv);
-    }
+    //    cipher_test_nopad(super::Cipher::bf_cbc(), pt, ct, key, iv);
+    //}
 
-    #[test]
-    fn test_bf_ecb() {
-        let pt = "5CD54CA83DEF57DA";
-        let ct = "B1B8CC0B250F09A0";
-        let key = "0131D9619DC1376E";
-        let iv = "0000000000000000";
+    //#[test]
+    //fn test_bf_ecb() {
+    //    let pt = "5CD54CA83DEF57DA";
+    //    let ct = "B1B8CC0B250F09A0";
+    //    let key = "0131D9619DC1376E";
+    //    let iv = "0000000000000000";
 
-        cipher_test_nopad(super::Cipher::bf_ecb(), pt, ct, key, iv);
-    }
+    //    cipher_test_nopad(super::Cipher::bf_ecb(), pt, ct, key, iv);
+    //}
 
-    #[test]
-    fn test_bf_cfb64() {
-        let pt = "37363534333231204E6F77206973207468652074696D6520666F722000";
-        let ct = "E73214A2822139CAF26ECF6D2EB9E76E3DA3DE04D1517200519D57A6C3";
-        let key = "0123456789ABCDEFF0E1D2C3B4A59687";
-        let iv = "FEDCBA9876543210";
+    //#[test]
+    //fn test_bf_cfb64() {
+    //    let pt = "37363534333231204E6F77206973207468652074696D6520666F722000";
+    //    let ct = "E73214A2822139CAF26ECF6D2EB9E76E3DA3DE04D1517200519D57A6C3";
+    //    let key = "0123456789ABCDEFF0E1D2C3B4A59687";
+    //    let iv = "FEDCBA9876543210";
 
-        cipher_test_nopad(super::Cipher::bf_cfb64(), pt, ct, key, iv);
-    }
+    //    cipher_test_nopad(super::Cipher::bf_cfb64(), pt, ct, key, iv);
+    //}
 
-    #[test]
-    fn test_bf_ofb() {
-        let pt = "37363534333231204E6F77206973207468652074696D6520666F722000";
-        let ct = "E73214A2822139CA62B343CC5B65587310DD908D0C241B2263C2CF80DA";
-        let key = "0123456789ABCDEFF0E1D2C3B4A59687";
-        let iv = "FEDCBA9876543210";
+    //#[test]
+    //fn test_bf_ofb() {
+    //    let pt = "37363534333231204E6F77206973207468652074696D6520666F722000";
+    //    let ct = "E73214A2822139CA62B343CC5B65587310DD908D0C241B2263C2CF80DA";
+    //    let key = "0123456789ABCDEFF0E1D2C3B4A59687";
+    //    let iv = "FEDCBA9876543210";
 
-        cipher_test_nopad(super::Cipher::bf_ofb(), pt, ct, key, iv);
-    }
+    //    cipher_test_nopad(super::Cipher::bf_ofb(), pt, ct, key, iv);
+    //}
 
     #[test]
     fn test_des_cbc() {
