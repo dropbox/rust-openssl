@@ -57,11 +57,36 @@ fn main() {
     check_rustc_versions();
 
     let target = env::var("TARGET").unwrap();
+    let host = env::var("HOST").unwrap();
+
+    // DBX: when cross-compiling, allows `cargo check` to work
+    // NOTE: keep this in sync w/ Bazel
+    if target.contains("windows") && !host.contains("windows")
+        || target.contains("darwin") && !host.contains("darwin")
+        || target.contains("linux") && !host.contains("linux")
+    {
+        println!("cargo:conf=OPENSSL_NO_RFC3779");
+        println!("cargo:rustc-cfg=osslconf=\"OPENSSL_NO_RFC3779\"");
+        println!("cargo:rustc-cfg=ossl101");
+        println!("cargo:rustc-cfg=ossl102");
+        println!("cargo:rustc-cfg=ossl102f");
+        println!("cargo:rustc-cfg=ossl102h");
+        println!("cargo:rustc-cfg=ossl110");
+        println!("cargo:rustc-cfg=ossl110f");
+        println!("cargo:rustc-cfg=ossl110g");
+        println!("cargo:rustc-cfg=ossl110h");
+        println!("cargo:rustc-cfg=ossl111");
+        println!("cargo:rustc-cfg=ossl111b");
+        println!("cargo:rustc-cfg=ossl111c");
+        println!("cargo:version_number=1010107f");
+        println!("cargo:version=111");
+        return;
+    }
 
     // DBX: to keep `cargo` seamless, hack in the location of the virtual environment.
     // XXX: we should consider moving to using the `OPENSSL_DIR` env var.
     let virtual_env_dir = env::current_dir().unwrap().join("..").join("..").join("virtual_env");
-    let openssl_dir = if target.contains("windows") {
+    let openssl_dir = if host.contains("windows") {
         virtual_env_dir.join("openssl")
     } else {
         virtual_env_dir.clone()
